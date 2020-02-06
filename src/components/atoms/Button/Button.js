@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 const Button = styled.button`
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.notes};
   width: ${({ width }) => width || '220px'};
   height: 47px;
   border: none;
@@ -11,10 +11,16 @@ const Button = styled.button`
   font-weight: 600;
   text-transform: uppercase;
 
+  ${({ pageType }) =>
+    pageType &&
+    css`
+      background-color: ${({ theme }) => theme[pageType]};
+    `}
+
   ${({ secondary }) =>
     secondary &&
     css`
-      background-color: ${({ theme }) => theme.secondary};
+      background-color: ${({ theme }) => theme.grey200};
       width: 105px;
       height: 30px;
       font-size: 10px;
@@ -22,5 +28,3 @@ const Button = styled.button`
 `;
 
 export default Button;
-
-// ${({ color }) => color || '#ffd82b'};
