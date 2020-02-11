@@ -7,19 +7,23 @@ export const getArticles = () => async dispatch => {
   });
 };
 
-export const addArticle = article => async dispatch => {
-  dispatch({
+export const addArticle = ({ id, title, articleUrl, content, created }) => {
+  const urlCorrect = /^(http|https)/.test(articleUrl);
+  const article = { id, title, articleUrl, content, created };
+  if (!urlCorrect) {
+    const correctUrl = `https://${articleUrl}`;
+    article.articleUrl = correctUrl;
+  }
+  return {
     type: ADD_ARTICLE,
     payload: article,
-  });
+  };
 };
 
-export const deleteArticle = id => async dispatch => {
-  dispatch({
-    type: DELETE_ARTICLE,
-    payload: id,
-  });
-};
+export const deleteArticle = id => ({
+  type: DELETE_ARTICLE,
+  payload: id,
+});
 
 export const saveArticle = article => async dispatch => {
   dispatch({

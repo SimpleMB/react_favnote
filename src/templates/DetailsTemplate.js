@@ -31,6 +31,7 @@ const StyledLink = styled.a`
   display: block;
   font-weight: bold;
   text-decoration: none;
+  margin-bottom: 20px;
 `;
 
 const DetailsTemplate = ({
@@ -51,9 +52,16 @@ const DetailsTemplate = ({
         <StyledHeading>{title}</StyledHeading>
         <StyledParagraph bold>{created}</StyledParagraph>
         <StyledParagraph>{content}</StyledParagraph>
-        articleUrl: {articleUrl} <br />
-        twitterName: {twitterName}
-        <StyledLink href={articleUrl || twitterName}>Link</StyledLink>
+        {articleUrl && (
+          <StyledLink target="_blank" href={articleUrl}>
+            Link to the article
+          </StyledLink>
+        )}
+        {twitterName && (
+          <StyledLink href={`http://twitter.com/${twitterName}`}>
+            Link to the Twitter profile
+          </StyledLink>
+        )}
         <Button pageType={pageType} onClick={onClose}>
           Close / Save
         </Button>

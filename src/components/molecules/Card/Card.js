@@ -8,7 +8,7 @@ import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import Heading from 'components/atoms/Heading/Heading';
 import Button from 'components/atoms/Button/Button';
 import linkIcon from 'assets/icons/link.svg';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 const StyledWrapper = styled.div`
   box-shadow: 0 10px 30px -10px hsla(0, 0%, 0%, 0.1);
@@ -103,11 +103,10 @@ const Card = ({
         {cardType === 'twitters' && (
           <StyledAvatar src={`https://avatars.io/twitter/${twitterName}`} />
         )}
-        {cardType === 'articles' && <StyledIconLink href={articleUrl} />}
+        {cardType === 'articles' && <StyledIconLink target="_blank" href={articleUrl} />}
       </InnerWrapper>
       <InnerWrapper flex>
         <Paragraph>{content.split(' ', 12).join(' ')}...</Paragraph>
-        <Link to={articleUrl} />
         <Button secondary onClick={onRemove}>
           Remove
         </Button>

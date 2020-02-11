@@ -22,6 +22,7 @@ const Root = () => {
             <Route path={routes.twitter} component={DetailsPage} />
             <Route exact path={routes.articles} component={Articles} />
             <Route path={routes.article} component={DetailsPage} />
+            <Route render={() => <Redirect to="/notes" />} />
           </Switch>
         </MainTemplate>
       </BrowserRouter>

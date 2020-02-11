@@ -1,14 +1,18 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DetailsTemplate from 'templates/DetailsTemplate';
+import { routes } from 'routes';
 
 const DetailsPage = ({ match, note: { notes }, article: { articles }, twitter: { twitters } }) => {
   const pathArray = match.url.split('/');
   const pageType = pathArray[1];
-  const itemId = Number(pathArray[2]);
+  const itemId = pathArray[2];
 
-  const item = () => {
+  console.log(itemId);
+
+  const item = (function() {
     switch (pageType) {
       case 'notes':
         return notes.filter(singleItem => singleItem.id === itemId);
@@ -19,8 +23,10 @@ const DetailsPage = ({ match, note: { notes }, article: { articles }, twitter: {
       default:
         return 0;
     }
-  };
-  const { id, title, content, articleUrl, twitterName, created } = item()[0];
+  })();
+  if (item[0] === undefined) return <Redirect push to={routes[pageType]} />;
+
+  const { id, title, content, articleUrl, twitterName, created } = item[0];
 
   return (
     <DetailsTemplate

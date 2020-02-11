@@ -15,9 +15,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: 62.5%;
   }
 
-  body {
+  body, input, textarea, button {
     font-size: 1.6rem;
     font-family: Montserrat, sans-serif;
+    outline: none;
   }
 
 `;

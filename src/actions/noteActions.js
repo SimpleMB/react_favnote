@@ -7,19 +7,18 @@ export const getNotes = () => async dispatch => {
   });
 };
 
-export const addNote = note => async dispatch => {
-  dispatch({
+export const addNote = ({ id, title, content, created }) => {
+  const note = { id, title, content, created };
+  return {
     type: ADD_NOTE,
     payload: note,
-  });
+  };
 };
 
-export const deleteNote = id => async dispatch => {
-  dispatch({
-    type: DELETE_NOTE,
-    payload: id,
-  });
-};
+export const deleteNote = id => ({
+  type: DELETE_NOTE,
+  payload: id,
+});
 
 export const saveNote = note => async dispatch => {
   dispatch({

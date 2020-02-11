@@ -25,6 +25,7 @@ const StyledWrapper = styled.nav`
   width: 10rem;
   background-color: ${({ theme }) => theme.notes};
   padding: 35px 0;
+  z-index: 999;
 
   ${({ activeColor }) =>
     activeColor &&

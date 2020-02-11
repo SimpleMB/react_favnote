@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { compose } from 'redux';
@@ -9,22 +9,16 @@ import { connect } from 'react-redux';
 import { switchPageType as switchPageTypeAction } from 'actions/globalActions';
 
 const MainTemplate = ({ children, theme: { theme }, switchPageType, ...props }) => {
-  const [state, setState] = useState({ pageType: 'notes' });
   const {
     location: { pathname },
   } = props;
 
   useEffect(() => {
     const pageTypes = ['notes', 'twitters', 'articles'];
-    const [currentPage] = pageTypes.filter(page => props.location.pathname.includes(page));
-    setState({ pageType: currentPage });
+    const [currentPage] = pageTypes.filter(page => pathname.includes(page));
+    if (currentPage) switchPageType(currentPage);
     // eslint-disable-next-line
   }, [pathname]);
-
-  useEffect(() => {
-    switchPageType(state.pageType);
-    // eslint-disable-next-line
-  }, [state]);
 
   return (
     <div>
