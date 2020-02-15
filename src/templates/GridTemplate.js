@@ -55,7 +55,7 @@ const GridTemplate = ({ children, global: { pageType } }) => {
   const handleNewItemPanel = () => {
     setState({ newItemPanelActive: !newItemPanelActive });
   };
-  const elementsCount = children.length;
+  const elementsCount = children && children.length;
   return (
     <UserPageTemplate>
       <StyledWrapper>
@@ -78,8 +78,12 @@ const GridTemplate = ({ children, global: { pageType } }) => {
 };
 
 GridTemplate.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  children: PropTypes.arrayOf(PropTypes.object),
   global: PropTypes.objectOf(PropTypes.string).isRequired,
+};
+
+GridTemplate.defaultProps = {
+  children: [],
 };
 
 const mapStateToProps = state => ({

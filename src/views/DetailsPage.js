@@ -10,9 +10,7 @@ const DetailsPage = ({ match, note: { notes }, article: { articles }, twitter: {
   const pageType = pathArray[1];
   const itemId = pathArray[2];
 
-  console.log(itemId);
-
-  const item = (function() {
+  const item = (() => {
     switch (pageType) {
       case 'notes':
         return notes.filter(singleItem => singleItem.id === itemId);
@@ -24,6 +22,7 @@ const DetailsPage = ({ match, note: { notes }, article: { articles }, twitter: {
         return 0;
     }
   })();
+
   if (item[0] === undefined) return <Redirect push to={routes[pageType]} />;
 
   const { id, title, content, articleUrl, twitterName, created } = item[0];

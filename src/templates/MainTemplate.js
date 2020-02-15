@@ -14,7 +14,7 @@ const MainTemplate = ({ children, theme: { theme }, switchPageType, ...props }) 
   } = props;
 
   useEffect(() => {
-    const pageTypes = ['notes', 'twitters', 'articles'];
+    const pageTypes = ['notes', 'twitters', 'articles', 'login', 'register'];
     const [currentPage] = pageTypes.filter(page => pathname.includes(page));
     if (currentPage) switchPageType(currentPage);
     // eslint-disable-next-line
