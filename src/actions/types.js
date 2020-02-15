@@ -21,3 +21,8 @@ export const SWITCH_THEME = 'SWITCH_THEME';
 
 // actions for Global Variables
 export const SWITCH_PAGE_TYPE = 'SWITH_PAGE_TYPE';
+
+// actions for Authorization
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const REGISTER = 'REGISTER';

@@ -1,8 +1,9 @@
 import React from 'react';
+import AuthTemplate from 'templates/AuthTemplate';
 // import PropTypes from 'prop-types';
 
 const AuthPage = () => {
-  return <div>Hello</div>;
+  return <AuthTemplate>Hello</AuthTemplate>;
 };
 
 AuthPage.propTypes = {};
