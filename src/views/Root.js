@@ -9,7 +9,8 @@ import Twitters from 'views/Twitters';
 import Articles from 'views/Articles';
 import { auth } from '../firebase';
 import DetailsPage from './DetailsPage';
-import AuthPage from './AuthPage';
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
 
 const Root = () => {
   useEffect(() => {
@@ -21,15 +22,15 @@ const Root = () => {
       <BrowserRouter>
         <MainTemplate>
           <Switch>
-            <Route exact path={routes.home} render={() => <Redirect to={routes.twitter} />} />
+            <Route exact path={routes.home} render={() => <Redirect to={routes.notes} />} />
             <Route exact path={routes.notes} component={Notes} />
             <Route path={routes.note} component={DetailsPage} />
             <Route exact path={routes.twitters} component={Twitters} />
             <Route path={routes.twitter} component={DetailsPage} />
             <Route exact path={routes.articles} component={Articles} />
             <Route path={routes.article} component={DetailsPage} />
-            <Route path={routes.login} component={AuthPage} />
-            <Route path={routes.register} component={AuthPage} />
+            <Route path={routes.login} component={LoginPage} />
+            <Route path={routes.register} component={RegisterPage} />
             <Route render={() => <Redirect to="/notes" />} />
           </Switch>
         </MainTemplate>

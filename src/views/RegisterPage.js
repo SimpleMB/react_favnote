@@ -2,10 +2,10 @@ import React from 'react';
 import AuthTemplate from 'templates/AuthTemplate';
 // import PropTypes from 'prop-types';
 
-const AuthPage = () => {
-  return <AuthTemplate>Hello</AuthTemplate>;
+const RegisterPage = () => {
+  return <AuthTemplate />;
 };
 
-AuthPage.propTypes = {};
+RegisterPage.propTypes = {};
 
-export default AuthPage;
+export default RegisterPage;
