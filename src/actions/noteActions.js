@@ -2,19 +2,14 @@ import { GET_NOTES, ADD_NOTE, DELETE_NOTE, SAVE_NOTE } from './types';
 import { db, auth } from '../firebase';
 
 export const getNotes = () => dispatch => {
-  console.log('hello from getNotes, current user is: ', auth.currentUser.email);
   db.collection('notes')
     .where('userId', '==', auth.currentUser.uid)
     .get()
     .then(querySnapshot => {
-      console.log(querySnapshot);
       const notes = [];
       querySnapshot.forEach(function(doc) {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, ' => ', doc.data());
         notes.push({ id: doc.id, ...doc.data() });
       });
-      console.log(notes);
       dispatch({
         type: GET_NOTES,
         payload: notes,

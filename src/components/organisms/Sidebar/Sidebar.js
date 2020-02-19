@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled, { css } from 'styled-components';
 import { switchTheme as switchThemeAction } from 'actions/themeActions';
+import { logout as logoutAction } from 'actions/authActions';
 import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
 import Button from 'components/atoms/Button/Button';
 import bulbIcon from 'assets/icons/bulb.svg';
@@ -60,7 +61,7 @@ const StyledThemeButton = styled(Button)`
   max-width: 9rem;
 `;
 
-const Sidebar = ({ global: { pageType }, switchTheme }) => {
+const Sidebar = ({ global: { pageType }, switchTheme, logout }) => {
   return (
     <StyledWrapper activeColor={pageType}>
       <StyledLogoLink exact to="/" />
@@ -76,7 +77,7 @@ const Sidebar = ({ global: { pageType }, switchTheme }) => {
         </li>
       </NavWrapper>
 
-      <StyledLogoutButton as={NavLink} exact to="/logout" icon={logoutIcon} />
+      <StyledLogoutButton as={NavLink} exact to="/" icon={logoutIcon} onClick={logout} />
       <StyledThemeButton secondary onClick={switchTheme}>
         Theme
       </StyledThemeButton>
@@ -87,14 +88,17 @@ const Sidebar = ({ global: { pageType }, switchTheme }) => {
 Sidebar.propTypes = {
   global: PropTypes.objectOf(PropTypes.string.isRequired).isRequired,
   switchTheme: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   global: state.global,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
   switchTheme: () => dispatch(switchThemeAction()),
+  logout: () => dispatch(logoutAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

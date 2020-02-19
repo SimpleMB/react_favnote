@@ -2,10 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { login, register } from 'actions/authActions';
 import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
 import Loader from 'assets/icons/loader.gif';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Redirect } from 'react-router-dom';
+import { routes } from 'routes';
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -36,6 +39,7 @@ const StyledForm = styled(Form)`
 const StyledInput = styled(Input)`
   margin-bottom: 2rem;
   width: 80%;
+  text-align: center;
 `;
 
 const StyledLoaderWrapper = styled(StyledForm)``;
@@ -53,16 +57,38 @@ const StyledRedirectLink = styled.a`
   }
 `;
 
-const AuthForm = ({ global: { pageType }, onRedirect }) => {
+const AuthForm = ({
+  global: { pageType },
+  auth: { user },
+  onRedirect,
+  loginAction,
+  registerAction,
+}) => {
+  if (user) return <Redirect to={routes.home} />;
   return (
     <StyledWrapper>
       <StyledFormHeading>{pageType === 'login' ? 'Login' : 'Register'}</StyledFormHeading>
       <Formik
         initialValues={{ email: '', password: '', password2: '' }}
-        // onSubmit={(values, { setSubmitting }) => {
-        //   const {} = values;
-        //   setSubmitting(false)
-        // }}
+        validate={values => {
+          const errors = {};
+          if (!values.email) {
+            errors.email = 'Required';
+          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+            errors.email = 'Invalid email address';
+          }
+          if (pageType === 'register' && values.password !== values.password2) {
+            errors.password2 = "Passwords don't match";
+          }
+          return errors;
+        }}
+        onSubmit={(values, { resetForm, setSubmitting }) => {
+          const { email, password } = values;
+          if (pageType === 'login') loginAction(email, password);
+          if (pageType === 'register') registerAction(email, password);
+          resetForm();
+          setSubmitting(false);
+        }}
       >
         {({ isSubmitting }) =>
           isSubmitting ? (
@@ -76,14 +102,17 @@ const AuthForm = ({ global: { pageType }, onRedirect }) => {
               <Field as={StyledInput} type="email" name="email" placeholder="email" />
               <Field as={StyledInput} type="password" name="password" placeholder="password" />
               {pageType === 'register' && (
-                <Field
-                  as={StyledInput}
-                  type="password"
-                  name="password2"
-                  placeholder="confirm password"
-                />
+                <>
+                  <ErrorMessage name="password2" component="div" />
+                  <Field
+                    as={StyledInput}
+                    type="password"
+                    name="password2"
+                    placeholder="confirm password"
+                  />
+                </>
               )}
-              <Button>{pageType === 'login' ? 'login' : 'register'}</Button>
+              <Button type="submit">{pageType === 'login' ? 'login' : 'register'}</Button>
             </StyledForm>
           )
         }
@@ -97,11 +126,20 @@ const AuthForm = ({ global: { pageType }, onRedirect }) => {
 
 AuthForm.propTypes = {
   global: PropTypes.objectOf(PropTypes.string).isRequired,
+  auth: PropTypes.objectOf(PropTypes.object).isRequired,
   onRedirect: PropTypes.func.isRequired,
+  loginAction: PropTypes.func.isRequired,
+  registerAction: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   global: state.global,
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps)(AuthForm);
+const mapDispatchToProps = dispatch => ({
+  loginAction: (email, password) => dispatch(login(email, password)),
+  registerAction: (email, password) => dispatch(register(email, password)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);

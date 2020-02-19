@@ -12,7 +12,7 @@ export default (state = { user: null }, action) => {
     case LOGOUT:
       return {
         ...state,
-        user: action.payload,
+        user: null,
       };
     default:
       return state;
