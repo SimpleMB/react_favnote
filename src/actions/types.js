@@ -26,3 +26,4 @@ export const SWITCH_PAGE_TYPE = 'SWITH_PAGE_TYPE';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
+export const CHECK_USER = 'CHECK_USER';

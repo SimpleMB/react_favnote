@@ -1,12 +1,13 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { routes } from 'routes';
-import { auth } from '../../firebase';
 
-const PrivateRoute = ({ component: Component, render, exact, path }) => {
+const PrivateRoute = ({ component: Component, render, exact, path, auth: { user } }) => {
   const renderComponent = () => <Component />;
-  return !auth.currentUser ? (
+
+  return !user ? (
     <Redirect to={routes.login} />
   ) : (
     <Route exact={exact} path={path} render={render || renderComponent} />
@@ -18,6 +19,7 @@ PrivateRoute.propTypes = {
   render: PropTypes.func,
   exact: PropTypes.bool,
   path: PropTypes.string.isRequired,
+  auth: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 PrivateRoute.defaultProps = {
@@ -26,4 +28,8 @@ PrivateRoute.defaultProps = {
   exact: false,
 };
 
-export default PrivateRoute;
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(PrivateRoute);

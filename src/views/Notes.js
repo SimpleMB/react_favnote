@@ -8,7 +8,7 @@ import { auth } from '../firebase';
 
 const Notes = ({ note: { notes }, auth: { user }, getNotesAction }) => {
   useEffect(() => {
-    auth.onAuthStateChanged(userCred => userCred && getNotesAction());
+    if (auth.currentUser) getNotesAction();
     // eslint-disable-next-line
   }, [user]);
 

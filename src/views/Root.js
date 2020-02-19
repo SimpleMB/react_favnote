@@ -13,10 +13,6 @@ import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 
 const Root = () => {
-  // useEffect(() => {
-  //   auth.signInWithEmailAndPassword('test1@gmail.com', '123456');
-  // }, []);
-
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -29,9 +25,9 @@ const Root = () => {
             <PrivateRoute path={routes.twitter} component={DetailsPage} />
             <PrivateRoute exact path={routes.articles} component={Articles} />
             <PrivateRoute path={routes.article} component={DetailsPage} />
-            <Route path={routes.login} component={LoginPage} />
-            <Route path={routes.register} component={RegisterPage} />
-            <Route render={() => <Redirect to="/notes" />} />
+            <Route exact path={routes.login} component={LoginPage} />
+            <Route exact path={routes.register} component={RegisterPage} />
+            {/* <Route render={() => <Redirect to="/notes" />} /> */}
           </Switch>
         </MainTemplate>
       </BrowserRouter>

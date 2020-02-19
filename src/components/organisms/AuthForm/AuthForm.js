@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login, register } from 'actions/authActions';
+import { login as loginAction, register as registerAction } from 'actions/authActions';
 import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
 import Loader from 'assets/icons/loader.gif';
@@ -57,14 +57,11 @@ const StyledRedirectLink = styled.a`
   }
 `;
 
-const AuthForm = ({
-  global: { pageType },
-  auth: { user },
-  onRedirect,
-  loginAction,
-  registerAction,
-}) => {
+const AuthForm = ({ global: { pageType }, auth: { user }, onRedirect, login, register }) => {
+  // TODO here's something to think about :(
+  // const [state, setState] = useState({ islogOn: false });
   if (user) return <Redirect to={routes.home} />;
+
   return (
     <StyledWrapper>
       <StyledFormHeading>{pageType === 'login' ? 'Login' : 'Register'}</StyledFormHeading>
@@ -82,12 +79,12 @@ const AuthForm = ({
           }
           return errors;
         }}
-        onSubmit={(values, { resetForm, setSubmitting }) => {
+        onSubmit={values => {
           const { email, password } = values;
-          if (pageType === 'login') loginAction(email, password);
-          if (pageType === 'register') registerAction(email, password);
-          resetForm();
-          setSubmitting(false);
+          if (pageType === 'login') login(email, password);
+          if (pageType === 'register') register(email, password);
+          // setState({ islogOn: true });
+          // setSubmitting(false);
         }}
       >
         {({ isSubmitting }) =>
@@ -97,7 +94,6 @@ const AuthForm = ({
             </StyledLoaderWrapper>
           ) : (
             <StyledForm>
-              {/* TODO */}
               <ErrorMessage name="email" component="div" />
               <Field as={StyledInput} type="email" name="email" placeholder="email" />
               <Field as={StyledInput} type="password" name="password" placeholder="password" />
@@ -128,8 +124,8 @@ AuthForm.propTypes = {
   global: PropTypes.objectOf(PropTypes.string).isRequired,
   auth: PropTypes.objectOf(PropTypes.object).isRequired,
   onRedirect: PropTypes.func.isRequired,
-  loginAction: PropTypes.func.isRequired,
-  registerAction: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -138,8 +134,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loginAction: (email, password) => dispatch(login(email, password)),
-  registerAction: (email, password) => dispatch(register(email, password)),
+  login: (email, password) => dispatch(loginAction(email, password)),
+  register: (email, password) => dispatch(registerAction(email, password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);

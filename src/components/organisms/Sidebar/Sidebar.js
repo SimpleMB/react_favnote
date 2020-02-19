@@ -12,6 +12,7 @@ import logoutIcon from 'assets/icons/logout.svg';
 import penIcon from 'assets/icons/pen.svg';
 import twitterIcon from 'assets/icons/twitter.svg';
 import logoIcon from 'assets/icons/logo.svg';
+import { routes } from 'routes';
 
 const StyledWrapper = styled.nav`
   position: fixed;
@@ -77,7 +78,7 @@ const Sidebar = ({ global: { pageType }, switchTheme, logout }) => {
         </li>
       </NavWrapper>
 
-      <StyledLogoutButton as={NavLink} exact to="/" icon={logoutIcon} onClick={logout} />
+      <StyledLogoutButton as={NavLink} exact to={routes.login} icon={logoutIcon} onClick={logout} />
       <StyledThemeButton secondary onClick={switchTheme}>
         Theme
       </StyledThemeButton>

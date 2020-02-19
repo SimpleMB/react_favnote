@@ -4,14 +4,21 @@ import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from 'theme/GlobalStyle';
-// import { theme } from 'theme/mainTheme';
 import { connect } from 'react-redux';
 import { switchPageType as switchPageTypeAction } from 'actions/globalActions';
+import { checkUser as checkUserAction } from 'actions/authActions';
+import { auth } from '../firebase';
 
-const MainTemplate = ({ children, theme: { theme }, switchPageType, ...props }) => {
+const MainTemplate = ({ children, theme: { theme }, switchPageType, checkUser, ...props }) => {
   const {
     location: { pathname },
   } = props;
+
+  useEffect(() => {
+    auth.onAuthStateChanged(user => {
+      checkUser(user);
+    });
+  }, []);
 
   useEffect(() => {
     const pageTypes = ['notes', 'twitters', 'articles', 'login', 'register'];
@@ -33,14 +40,18 @@ MainTemplate.propTypes = {
   location: PropTypes.objectOf(PropTypes.string).isRequired,
   theme: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.bool])).isRequired,
   switchPageType: PropTypes.func.isRequired,
+  checkUser: PropTypes.func.isRequired,
+  auth: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = state => ({
   theme: state.theme,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({
   switchPageType: pageType => dispatch(switchPageTypeAction(pageType)),
+  checkUser: user => dispatch(checkUserAction(user)),
 });
 
 export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(MainTemplate);
