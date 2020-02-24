@@ -12,8 +12,6 @@ export const checkUser = user => dispatch => {
     });
   }
 };
-//   );
-// };
 
 export const register = (email, password) => dispatch => {
   auth.createUserWithEmailAndPassword(email, password).catch(err => console.log(err));

@@ -14,6 +14,7 @@ const StyledWrapper = styled.div`
   position: relative;
   padding: 0 150px 30px 14rem;
   background-color: ${({ theme }) => theme.mainBackground};
+  min-height: 100vh;
 `;
 
 const StyledPageHeader = styled.div`
