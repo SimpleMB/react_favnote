@@ -27,12 +27,13 @@ const StyledDescription = styled(Paragraph)`
   font-weight: ${({ theme }) => theme.bold};
 `;
 
-const AuthTemplate = ({ global: { pageType } }) => {
+const AuthTemplate = ({ global: { pageType }, auth: { user } }) => {
   const [state, setState] = useState({ redirect: false });
   const onRedirect = () => {
     setState({ redirect: true });
   };
 
+  if (user) return <Redirect to={routes.notes} />;
   if (state.redirect)
     return <Redirect push to={pageType === 'register' ? routes.login : routes.register} />;
 
@@ -47,10 +48,12 @@ const AuthTemplate = ({ global: { pageType } }) => {
 
 AuthTemplate.propTypes = {
   global: PropTypes.objectOf(PropTypes.string).isRequired,
+  auth: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = state => ({
   global: state.global,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps)(AuthTemplate);

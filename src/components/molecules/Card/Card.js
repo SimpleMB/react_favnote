@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { deleteNote as deleteNoteAction } from 'actions/noteActions';
 import { deleteArticle as deleteArticleAction } from 'actions/articleActions';
+import { deleteTwitter as deleteTwitterAction } from 'actions/twitterActions';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
@@ -77,6 +78,7 @@ const Card = ({
   created,
   deleteNote,
   deleteArticle,
+  deleteTwitter,
 }) => {
   const [state, setstate] = useState({ redirect: false });
   const handleCardClick = () => setstate({ redirect: true });
@@ -88,6 +90,9 @@ const Card = ({
         break;
       case 'articles':
         deleteArticle(id);
+        break;
+      case 'twitters':
+        deleteTwitter(id);
         break;
       default:
         break;
@@ -125,6 +130,7 @@ Card.propTypes = {
   created: PropTypes.string.isRequired,
   deleteNote: PropTypes.func.isRequired,
   deleteArticle: PropTypes.func.isRequired,
+  deleteTwitter: PropTypes.func.isRequired,
 };
 
 Card.defaultProps = {
@@ -136,6 +142,7 @@ Card.defaultProps = {
 const mapDispatchToProps = dispatch => ({
   deleteNote: id => dispatch(deleteNoteAction(id)),
   deleteArticle: id => dispatch(deleteArticleAction(id)),
+  deleteTwitter: id => dispatch(deleteTwitterAction(id)),
 });
 
 export default connect(null, mapDispatchToProps)(Card);

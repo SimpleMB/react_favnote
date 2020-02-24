@@ -1,40 +1,7 @@
-import { GET_TWITTERS, ADD_TWITTER } from 'actions/types';
+import { GET_TWITTERS, ADD_TWITTER, DELETE_TWITTER, SAVE_TWITTER } from 'actions/types';
 
 const initialState = {
-  twitters: [
-    {
-      id: '1',
-      title: 'Hello, this is',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam cum asperiores delectus officiis doloremque tenetur.',
-      created: '2 days ago',
-      twitterName: 'hello_roman',
-    },
-    {
-      id: '2',
-      title: 'React is not that',
-      content:
-        'He was an American jazz trumpeter, bandleader, and composer. He is among the most influential and acclaimed figures in the history of jazz and 20th century music.',
-      created: '5 days ago',
-      twitterName: 'dan_abramov',
-    },
-    {
-      id: '3',
-      title: 'I thought it would be',
-      content:
-        'An American jazz saxophonist and composer. Working in the bebop and hard bop idioms early in his career, Coltrane helped pioneer the use of modes and was at the forefront of free jazz.',
-      created: '6 days ago',
-      twitterName: 'mjackson',
-    },
-    {
-      id: '4',
-      title: 'Easier to leard and prettier to write',
-      content:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam cum asperiores delectus officiis doloremque tenetur.',
-      created: '6 days ago',
-      twitterName: 'sarah_edo',
-    },
-  ],
+  twitters: [],
 };
 
 export default (state = initialState, action) => {
@@ -48,6 +15,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         twitters: [...state.twitters, action.payload],
+      };
+    case DELETE_TWITTER:
+      return {
+        ...state,
+        twitters: state.twitters.filter(twit => twit.id !== action.payload),
+      };
+    case SAVE_TWITTER:
+      return {
+        ...state,
+        twitters: state.twitters.map(twit =>
+          twit.id === action.payload.id ? action.payload : twit,
+        ),
       };
     default:
       return state;

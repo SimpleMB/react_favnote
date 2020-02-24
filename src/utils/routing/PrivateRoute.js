@@ -16,7 +16,6 @@ PrivateRoute.propTypes = {
   exact: PropTypes.bool,
   path: PropTypes.string.isRequired,
   auth: PropTypes.objectOf(PropTypes.object).isRequired,
-  // match: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 PrivateRoute.defaultProps = {

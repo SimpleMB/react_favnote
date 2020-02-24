@@ -7,8 +7,6 @@ import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
 import Loader from 'assets/icons/loader.gif';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Redirect } from 'react-router-dom';
-import { routes } from 'routes';
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -57,11 +55,7 @@ const StyledRedirectLink = styled.a`
   }
 `;
 
-const AuthForm = ({ global: { pageType }, auth: { user }, onRedirect, login, register }) => {
-  // TODO here's something to think about :(
-  // const [state, setState] = useState({ islogOn: false });
-  if (user) return <Redirect to={routes.home} />;
-
+const AuthForm = ({ global: { pageType }, onRedirect, login, register }) => {
   return (
     <StyledWrapper>
       <StyledFormHeading>{pageType === 'login' ? 'Login' : 'Register'}</StyledFormHeading>
@@ -83,8 +77,6 @@ const AuthForm = ({ global: { pageType }, auth: { user }, onRedirect, login, reg
           const { email, password } = values;
           if (pageType === 'login') login(email, password);
           if (pageType === 'register') register(email, password);
-          // setState({ islogOn: true });
-          // setSubmitting(false);
         }}
       >
         {({ isSubmitting }) =>
@@ -122,7 +114,6 @@ const AuthForm = ({ global: { pageType }, auth: { user }, onRedirect, login, reg
 
 AuthForm.propTypes = {
   global: PropTypes.objectOf(PropTypes.string).isRequired,
-  auth: PropTypes.objectOf(PropTypes.object).isRequired,
   onRedirect: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
@@ -130,7 +121,6 @@ AuthForm.propTypes = {
 
 const mapStateToProps = state => ({
   global: state.global,
-  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({

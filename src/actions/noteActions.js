@@ -7,7 +7,7 @@ export const getNotes = () => dispatch => {
     .get()
     .then(querySnapshot => {
       const notes = [];
-      querySnapshot.forEach(function(doc) {
+      querySnapshot.forEach(doc => {
         notes.push({ id: doc.id, ...doc.data() });
       });
       dispatch({
@@ -22,7 +22,7 @@ export const addNote = ({ title, content, created }) => dispatch => {
   const note = { title, content, created, userId: auth.currentUser.uid };
   db.collection('notes')
     .add(note)
-    .then(function(docRef) {
+    .then(docRef => {
       note.id = docRef.id;
       dispatch({
         type: ADD_NOTE,

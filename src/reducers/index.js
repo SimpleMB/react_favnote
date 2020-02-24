@@ -7,6 +7,7 @@ import articleReducer from 'reducers/articleReducer';
 import themeReducer from 'reducers/themeReducer';
 import globalReducer from 'reducers/globalReducer';
 
+// TODO: Create alert state for errors
 export default combineReducers({
   auth: authReducer,
   note: noteReducer,

@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Card from 'components/molecules/Card/Card';
 import GridTemplate from 'templates/GridTemplate';
-import { getNotes } from 'actions/noteActions';
+import { getNotes as getNotesAction } from 'actions/noteActions';
 import { auth } from '../firebase';
 
-const Notes = ({ note: { notes }, auth: { user }, getNotesAction }) => {
+const Notes = ({ note: { notes }, auth: { user }, getNotes }) => {
   useEffect(() => {
-    if (auth.currentUser) getNotesAction();
+    if (auth.currentUser) getNotes();
     // eslint-disable-next-line
   }, [user]);
 
@@ -26,12 +26,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getNotesAction: () => dispatch(getNotes()),
+  getNotes: () => dispatch(getNotesAction()),
 });
 
 Notes.propTypes = {
   note: PropTypes.oneOfType([PropTypes.object]).isRequired,
   auth: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  getNotesAction: PropTypes.func.isRequired,
+  getNotes: PropTypes.func.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Notes);

@@ -18,6 +18,7 @@ const MainTemplate = ({ children, theme: { theme }, switchPageType, checkUser, .
     auth.onAuthStateChanged(user => {
       checkUser(user);
     });
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
