@@ -6,7 +6,6 @@ import DetailsTemplate from 'templates/DetailsTemplate';
 import { routes } from 'routes';
 
 const DetailsPage = ({ match, note: { notes }, article: { articles }, twitter: { twitters } }) => {
-  console.log(match);
   const pathArray = match.url.split('/');
   const pageType = pathArray[1];
   const itemId = pathArray[2];

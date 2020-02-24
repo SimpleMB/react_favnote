@@ -27,7 +27,7 @@ const Root = () => {
             <PrivateRoute path={routes.article} component={DetailsPage} />
             <Route exact path={routes.login} component={LoginPage} />
             <Route exact path={routes.register} component={RegisterPage} />
-            {/* <Route render={() => <Redirect to="/notes" />} /> */}
+            <Route render={() => <Redirect to="/notes" />} />
           </Switch>
         </MainTemplate>
       </BrowserRouter>
