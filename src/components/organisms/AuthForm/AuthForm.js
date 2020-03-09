@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { login as loginAction, register as registerAction } from 'actions/authActions';
 import Input from 'components/atoms/Input/Input';
 import Button from 'components/atoms/Button/Button';
-import Loader from 'assets/icons/loader.gif';
+import LoaderIcon from 'assets/icons/loader.gif';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const StyledWrapper = styled.div`
@@ -14,7 +14,7 @@ const StyledWrapper = styled.div`
   justify-content: center;
   align-items: center;
   min-width: 35rem;
-  min-height: 50rem;
+  min-height: 37rem;
   background-color: white;
   border-radius: 10px;
   padding: 50px 10px;
@@ -55,34 +55,36 @@ const StyledRedirectLink = styled.a`
   }
 `;
 
-const AuthForm = ({ global: { pageType }, onRedirect, login, register }) => {
+const AuthForm = ({ global: { pageType }, auth: { loading }, onRedirect, login, register }) => {
   return (
     <StyledWrapper>
       <StyledFormHeading>{pageType === 'login' ? 'Login' : 'Register'}</StyledFormHeading>
       <Formik
         initialValues={{ email: '', password: '', password2: '' }}
         validate={values => {
-          const errors = {};
+          const formikErrors = {};
           if (!values.email) {
-            errors.email = 'Required';
+            formikErrors.email = 'Required';
           } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-            errors.email = 'Invalid email address';
+            formikErrors.email = 'Invalid email address';
           }
           if (pageType === 'register' && values.password !== values.password2) {
-            errors.password2 = "Passwords don't match";
+            formikErrors.password2 = "Passwords don't match";
           }
-          return errors;
+          return formikErrors;
         }}
-        onSubmit={values => {
+        onSubmit={(values, { setSubmitting }) => {
           const { email, password } = values;
           if (pageType === 'login') login(email, password);
           if (pageType === 'register') register(email, password);
+
+          setSubmitting(false);
         }}
       >
         {({ isSubmitting }) =>
-          isSubmitting ? (
+          isSubmitting || loading ? (
             <StyledLoaderWrapper>
-              <StyledLoader src={Loader} />
+              <StyledLoader src={LoaderIcon} />
             </StyledLoaderWrapper>
           ) : (
             <StyledForm>
@@ -114,6 +116,7 @@ const AuthForm = ({ global: { pageType }, onRedirect, login, register }) => {
 
 AuthForm.propTypes = {
   global: PropTypes.objectOf(PropTypes.string).isRequired,
+  auth: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
   onRedirect: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
@@ -121,6 +124,7 @@ AuthForm.propTypes = {
 
 const mapStateToProps = state => ({
   global: state.global,
+  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({

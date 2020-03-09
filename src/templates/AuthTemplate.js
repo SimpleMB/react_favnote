@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -6,7 +6,9 @@ import logo from 'assets/icons/logo.svg';
 import Paragraph from 'components/atoms/Paragraph/Paragraph';
 import { Redirect } from 'react-router-dom';
 import { routes } from 'routes';
+import { setAlert as setAlertAction } from 'actions/alertActions';
 import AuthForm from '../components/organisms/AuthForm/AuthForm';
+import Alert from '../components/molecules/Alert/Alert';
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -27,11 +29,17 @@ const StyledDescription = styled(Paragraph)`
   font-weight: ${({ theme }) => theme.bold};
 `;
 
-const AuthTemplate = ({ global: { pageType }, auth: { user } }) => {
+const AuthTemplate = ({ global: { pageType }, auth: { user, error }, setAlert }) => {
   const [state, setState] = useState({ redirect: false });
   const onRedirect = () => {
     setState({ redirect: true });
   };
+
+  // set alert popup if login or registration failed
+  useEffect(() => {
+    if (error) setAlert({ type: 'AUTHORIZATION ERROR', msg: error.message });
+    // eslint-disable-next-line
+  }, [error]);
 
   if (user) return <Redirect to={routes.notes} />;
   if (state.redirect)
@@ -39,6 +47,7 @@ const AuthTemplate = ({ global: { pageType }, auth: { user } }) => {
 
   return (
     <StyledWrapper>
+      {error && <Alert />}
       <StyledLogo src={logo} />
       <StyledDescription>Your new favorite online notes experience</StyledDescription>
       <AuthForm onRedirect={onRedirect} />
@@ -48,7 +57,9 @@ const AuthTemplate = ({ global: { pageType }, auth: { user } }) => {
 
 AuthTemplate.propTypes = {
   global: PropTypes.objectOf(PropTypes.string).isRequired,
-  auth: PropTypes.objectOf(PropTypes.object).isRequired,
+  auth: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.bool]))
+    .isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -56,4 +67,8 @@ const mapStateToProps = state => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps)(AuthTemplate);
+const mapDispatchToProps = dispatch => ({
+  setAlert: err => dispatch(setAlertAction(err)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthTemplate);

@@ -6,8 +6,9 @@ import GridTemplate from 'templates/GridTemplate';
 import { getArticles as getArticlesAction } from 'actions/articleActions';
 
 const Articles = ({ article: { articles }, auth: { user }, getArticles }) => {
+  // check if articles obj in state is empty and user is logged in / Then fetch articles from server
   useEffect(() => {
-    if (user) getArticles();
+    if (!articles[0] && user) getArticles();
     // eslint-disable-next-line
   }, [user]);
 
@@ -38,7 +39,7 @@ const mapDispatchToProps = dispatch => ({
 
 Articles.propTypes = {
   article: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  auth: PropTypes.objectOf(PropTypes.object).isRequired,
+  auth: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
   getArticles: PropTypes.func.isRequired,
 };
 

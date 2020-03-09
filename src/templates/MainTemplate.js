@@ -42,12 +42,10 @@ MainTemplate.propTypes = {
   theme: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.bool])).isRequired,
   switchPageType: PropTypes.func.isRequired,
   checkUser: PropTypes.func.isRequired,
-  auth: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = state => ({
   theme: state.theme,
-  auth: state.auth,
 });
 
 const mapDispatchToProps = dispatch => ({

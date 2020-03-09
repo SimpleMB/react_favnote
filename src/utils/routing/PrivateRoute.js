@@ -15,7 +15,7 @@ PrivateRoute.propTypes = {
   render: PropTypes.func,
   exact: PropTypes.bool,
   path: PropTypes.string.isRequired,
-  auth: PropTypes.objectOf(PropTypes.object).isRequired,
+  auth: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
 };
 
 PrivateRoute.defaultProps = {

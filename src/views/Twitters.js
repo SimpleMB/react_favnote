@@ -6,8 +6,9 @@ import GridTemplate from 'templates/GridTemplate';
 import { getTwitters as getTwittersAction } from 'actions/twitterActions';
 
 const Twitters = ({ twitter: { twitters }, auth: { user }, getTwitters }) => {
+  // check if twitters obj in state is empty and user is logged in / Then fetch Twitters
   useEffect(() => {
-    if (user) getTwitters();
+    if (!twitters[0] && user) getTwitters();
     // eslint-disable-next-line
   }, [user]);
 
@@ -38,7 +39,7 @@ const mapDispatchToProps = dispatch => ({
 
 Twitters.propTypes = {
   twitter: PropTypes.oneOfType([PropTypes.object]).isRequired,
-  auth: PropTypes.objectOf(PropTypes.object).isRequired,
+  auth: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]).isRequired,
   getTwitters: PropTypes.func.isRequired,
 };
 

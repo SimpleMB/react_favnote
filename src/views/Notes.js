@@ -7,8 +7,9 @@ import { getNotes as getNotesAction } from 'actions/noteActions';
 import { auth } from '../firebase';
 
 const Notes = ({ note: { notes }, auth: { user }, getNotes }) => {
+  // check if notes obj in state is empty and user is logged in / Then fetch Notes from server
   useEffect(() => {
-    if (auth.currentUser) getNotes();
+    if (!notes[0] && auth.currentUser) getNotes();
     // eslint-disable-next-line
   }, [user]);
 

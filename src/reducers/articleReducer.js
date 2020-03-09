@@ -1,7 +1,16 @@
-import { GET_ARTICLES, ADD_ARTICLE, DELETE_ARTICLE, SAVE_ARTICLE } from '../actions/types';
+import {
+  GET_ARTICLES,
+  ADD_ARTICLE,
+  DELETE_ARTICLE,
+  SAVE_ARTICLE,
+  ERROR_ARTICLES,
+  LOADING_ARTICLES,
+} from '../actions/types';
 
 const initialState = {
   articles: [],
+  error: null,
+  loading: true,
 };
 
 export default (state = initialState, action) => {
@@ -10,6 +19,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         articles: action.payload,
+        loading: false,
       };
     case ADD_ARTICLE:
       return {
@@ -27,6 +37,16 @@ export default (state = initialState, action) => {
         articles: state.articles.map(article =>
           article.id === action.payload.id ? action.payload : article,
         ),
+      };
+    case ERROR_ARTICLES:
+      return {
+        ...state,
+        error: action.payload,
+      };
+    case LOADING_ARTICLES:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

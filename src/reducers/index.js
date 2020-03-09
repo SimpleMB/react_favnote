@@ -6,9 +6,10 @@ import twitterReducer from 'reducers/twitterReducer';
 import articleReducer from 'reducers/articleReducer';
 import themeReducer from 'reducers/themeReducer';
 import globalReducer from 'reducers/globalReducer';
+import alertReducer from './alertReducer';
 
-// TODO: Create alert state for errors
 export default combineReducers({
+  alert: alertReducer,
   auth: authReducer,
   note: noteReducer,
   twitter: twitterReducer,

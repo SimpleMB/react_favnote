@@ -1,7 +1,19 @@
-import { GET_ARTICLES, ADD_ARTICLE, DELETE_ARTICLE, SAVE_ARTICLE } from './types';
+import {
+  GET_ARTICLES,
+  ADD_ARTICLE,
+  DELETE_ARTICLE,
+  SAVE_ARTICLE,
+  ERROR_ARTICLES,
+  LOADING_ARTICLES,
+} from './types';
 import { db, auth } from '../firebase';
 
+const setLoading = dispatch => {
+  dispatch({ type: LOADING_ARTICLES });
+};
+
 export const getArticles = () => dispatch => {
+  setLoading(dispatch);
   db.collection('articles')
     .where('userId', '==', auth.currentUser.uid)
     .get()
@@ -15,7 +27,13 @@ export const getArticles = () => dispatch => {
         payload: articles,
       });
     })
-    .catch(err => console.log('Get notes error: ', err));
+    .catch(err => {
+      console.log('Get articles error: ', err);
+      dispatch({
+        type: ERROR_ARTICLES,
+        payload: err,
+      });
+    });
 };
 
 export const addArticle = ({ title, articleUrl, content, created }) => dispatch => {
@@ -35,7 +53,13 @@ export const addArticle = ({ title, articleUrl, content, created }) => dispatch 
         payload: article,
       });
     })
-    .catch(err => console.error('Error adding document: ', err));
+    .catch(err => {
+      console.log('Add article error: ', err);
+      dispatch({
+        type: ERROR_ARTICLES,
+        payload: err,
+      });
+    });
 };
 
 export const deleteArticle = id => dispatch => {
@@ -48,7 +72,13 @@ export const deleteArticle = id => dispatch => {
         payload: id,
       }),
     )
-    .catch(err => console.log('Error deleting document: ', err));
+    .catch(err => {
+      console.log('Delete article error: ', err);
+      dispatch({
+        type: ERROR_ARTICLES,
+        payload: err,
+      });
+    });
 };
 
 export const saveArticle = article => dispatch => {
@@ -62,5 +92,11 @@ export const saveArticle = article => dispatch => {
         payload: article,
       }),
     )
-    .catch(err => console.log('Update error: ', err));
+    .catch(err => {
+      console.log('Save article error: ', err);
+      dispatch({
+        type: ERROR_ARTICLES,
+        payload: err,
+      });
+    });
 };

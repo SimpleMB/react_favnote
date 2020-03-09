@@ -9,6 +9,7 @@ import ButtonIcon from 'components/atoms/ButtonIcon/ButtonIcon';
 import plusIcon from 'assets/icons/plus.svg';
 import NewItemBar from 'components/organisms/NewItemBar/NewItemBar';
 import UserPageTemplate from './UserPageTemplate';
+import Loader from '../components/molecules/Loader/Loader';
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -49,9 +50,15 @@ const StyledButtonIcon = styled(ButtonIcon)`
   z-index: 10000;
 `;
 
-const GridTemplate = ({ children, global: { pageType } }) => {
+const GridTemplate = ({ children, global: { pageType }, note, twitter, article }) => {
   const [state, setState] = useState({ newItemPanelActive: false });
   const { newItemPanelActive } = state;
+
+  const loadingItems = {
+    notes: note.loading,
+    twitters: twitter.loading,
+    articles: article.loading,
+  };
 
   const handleNewItemPanel = () => {
     setState({ newItemPanelActive: !newItemPanelActive });
@@ -65,7 +72,7 @@ const GridTemplate = ({ children, global: { pageType } }) => {
           <StyledHeading big>{pageType}</StyledHeading>
           <StyledParagraph> {elementsCount} elements</StyledParagraph>
         </StyledPageHeader>
-        <StyledGridWrapper>{children}</StyledGridWrapper>
+        {loadingItems[pageType] ? <Loader /> : <StyledGridWrapper>{children}</StyledGridWrapper>}
         <StyledButtonIcon
           activeColor={pageType}
           icon={plusIcon}
@@ -81,6 +88,9 @@ const GridTemplate = ({ children, global: { pageType } }) => {
 GridTemplate.propTypes = {
   children: PropTypes.arrayOf(PropTypes.object),
   global: PropTypes.objectOf(PropTypes.string).isRequired,
+  note: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  twitter: PropTypes.oneOfType([PropTypes.object]).isRequired,
+  article: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 GridTemplate.defaultProps = {
@@ -89,6 +99,9 @@ GridTemplate.defaultProps = {
 
 const mapStateToProps = state => ({
   global: state.global,
+  note: state.note,
+  twitter: state.twitter,
+  article: state.article,
 });
 
 export default connect(mapStateToProps)(GridTemplate);

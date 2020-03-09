@@ -1,7 +1,12 @@
-import { GET_NOTES, ADD_NOTE, DELETE_NOTE, SAVE_NOTE } from './types';
+import { GET_NOTES, ADD_NOTE, DELETE_NOTE, SAVE_NOTE, ERROR_NOTES, LOADING_NOTES } from './types';
 import { db, auth } from '../firebase';
 
+const setLoading = dispatch => {
+  dispatch({ type: LOADING_NOTES });
+};
+
 export const getNotes = () => dispatch => {
+  setLoading(dispatch);
   db.collection('notes')
     .where('userId', '==', auth.currentUser.uid)
     .get()
@@ -15,10 +20,17 @@ export const getNotes = () => dispatch => {
         payload: notes,
       });
     })
-    .catch(err => console.log('Get notes error: ', err));
+    .catch(err => {
+      console.log('Get notes error: ', err);
+      dispatch({
+        type: ERROR_NOTES,
+        payload: err,
+      });
+    });
 };
 
 export const addNote = ({ title, content, created }) => dispatch => {
+  // setLoading(dispatch);
   const note = { title, content, created, userId: auth.currentUser.uid };
   db.collection('notes')
     .add(note)
@@ -29,10 +41,17 @@ export const addNote = ({ title, content, created }) => dispatch => {
         payload: note,
       });
     })
-    .catch(err => console.error('Error adding document: ', err));
+    .catch(err => {
+      console.log('Add note error: ', err);
+      dispatch({
+        type: ERROR_NOTES,
+        payload: err,
+      });
+    });
 };
 
 export const deleteNote = id => dispatch => {
+  // setLoading(dispatch);
   db.collection('notes')
     .doc(id)
     .delete()
@@ -42,10 +61,17 @@ export const deleteNote = id => dispatch => {
         payload: id,
       }),
     )
-    .catch(err => console.log('Error deleting document: ', err));
+    .catch(err => {
+      console.log('Delete note error: ', err);
+      dispatch({
+        type: ERROR_NOTES,
+        payload: err,
+      });
+    });
 };
 
 export const saveNote = note => dispatch => {
+  // setLoading(dispatch);
   const { title, content } = note;
   db.collection('notes')
     .doc(note.id)
@@ -56,5 +82,11 @@ export const saveNote = note => dispatch => {
         payload: note,
       }),
     )
-    .catch(err => console.log('Update error: ', err));
+    .catch(err => {
+      console.log('Save note error: ', err);
+      dispatch({
+        type: ERROR_NOTES,
+        payload: err,
+      });
+    });
 };

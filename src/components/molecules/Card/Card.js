@@ -68,6 +68,15 @@ const StyledIconLink = styled.a`
   border-radius: 50%;
 `;
 
+const StyledOpenButton = styled(Button)`
+  background-color: limegreen;
+`;
+
+const StyledButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Card = ({
   id,
   cardType,
@@ -101,7 +110,7 @@ const Card = ({
 
   if (state.redirect) return <Redirect push to={`${cardType}/${id}`} />;
   return (
-    <StyledWrapper onClick={handleCardClick}>
+    <StyledWrapper>
       <InnerWrapper cardType={cardType}>
         <StyledHeading>{title}</StyledHeading>
         <DateInfo>{created}</DateInfo>
@@ -112,9 +121,14 @@ const Card = ({
       </InnerWrapper>
       <InnerWrapper flex>
         <Paragraph>{content.split(' ', 12).join(' ')}...</Paragraph>
-        <Button secondary onClick={onRemove}>
-          Remove
-        </Button>
+        <StyledButtonWrapper>
+          <StyledOpenButton secondary onClick={handleCardClick}>
+            Open
+          </StyledOpenButton>
+          <Button secondary onClick={onRemove}>
+            Remove
+          </Button>
+        </StyledButtonWrapper>
       </InnerWrapper>
     </StyledWrapper>
   );
